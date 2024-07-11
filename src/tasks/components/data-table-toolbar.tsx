@@ -2,13 +2,12 @@
 
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import { DataTableViewOptions } from "@/app/(app)/examples/tasks/components/data-table-view-options";
-
 import { priorities, statuses } from "../data/data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import UpdateForm from "./UpdateForm";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -17,6 +16,26 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const [updateFormState, setUpdateFormState] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState({});
+  const [error, setError] = useState(null);
+
+  const fetchUsers = async () => {
+    // Fetch users logic here
+  };
+
+  // Example of opening the UpdateForm with dummy data
+  useEffect(() => {
+    const dummyData = {
+      first_name: "John",
+      last_name: "Doe",
+      email: "john.doe@example.com",
+      phone: "1234567890",
+      username: "johndoe",
+    };
+  }, []);
+
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -56,6 +75,19 @@ export function DataTableToolbar<TData>({
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
+      </div>
+      <div>
+        <Button onClick={() => setUpdateFormState(true)}>
+          Open Update Form
+        </Button>
+        <UpdateForm
+          updateFormState={updateFormState}
+          setUpdateFormState={setUpdateFormState}
+          userId={userId}
+          userData={userData}
+          fetchUsers={fetchUsers}
+          setError={setError}
+        />
       </div>
       {/* <DataTableViewOptions table={table} /> */}
     </div>
